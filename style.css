@@ -1,0 +1,49 @@
+h1{
+    color: white;
+}
+
+.grid{
+    display: flex;
+}
+
+#left{
+     background-color: #eaeaea;
+     width: 30%;
+     
+}
+
+#right{
+    background-color: white;
+    width: 70%;
+}
+
+.input-group{
+    width: 90%;
+    padding: 10px;
+}
+
+.list-group{
+    padding: 10px;
+}
+
+.jumbo{
+    padding: 10px;
+}
+
+.cards{
+    display: flex;
+}
+
+.card{
+    margin: 5px;
+}
+
+.main-weather{
+    height: 300px;
+    margin: 1px;
+    border-color: blue;
+}
+
+
+
+
