@@ -23,6 +23,7 @@ $(document).ready(function () {
                     name: city,
                     temprature: response.main.temp,
                     windspeed: response.wind.speed,
+                    humidity:response.main.humidity,
                     lon: response.coord.lon,
                     lat: response.coord.lat,
                     uvindex: "",
@@ -42,10 +43,10 @@ $(document).ready(function () {
                     i++;
 
                 })
+                //forecast();
+                //render();
             });
-            forecast();
-             render();
-
+            render();
             console.log(weatherData)
         })
 
@@ -76,8 +77,8 @@ $(document).ready(function () {
         $(`.basic-temp`).append(`
                 <li>Temprature:${weatherData[0].temprature}</li>
                 <li>Humidity:${weatherData[0].humidity}</li>
-                <li>Wind Speed: </li>
-                <li>UV Index: </li>
+                <li>Wind Speed: ${weatherData[0].windspeed}</li>
+                <li>UV Index:${weatherData[0].uvindex} </li>
 
         `)
     }

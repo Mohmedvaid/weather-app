@@ -64,5 +64,9 @@ h2{
     border-radius: 10px;
 }
 
+#city-name{
+    text-transform: capitalize;
+}
+
 
 
