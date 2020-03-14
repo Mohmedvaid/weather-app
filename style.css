@@ -67,6 +67,9 @@ h2{
 #city-name{
     text-transform: capitalize;
 }
+.list-group-item{
+    text-transform: capitalize;
+}
 
 
 
