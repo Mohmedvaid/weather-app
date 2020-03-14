@@ -40,7 +40,7 @@
                 <div class="input-group">
                     <input type="text" class="form-control" placeholder="Search this blog">
                     <div class="input-group-append">
-                      <button class="btn btn-primary" type="button">
+                      <button id="city-btn" class="btn btn-primary" type="button">
                         <i class="fa fa-search"></i>
                       </button>
                     </div>
@@ -65,8 +65,14 @@
                     <!--Jumbo-->
                     <div class="main-weather">
                         <div>
-                            <h2>Atlanta</h2>
+                            <h2 id="city-name">Atlanta</h2>
                         </div>
+                        <ul class="basic-temp" style="list-style-type:none;">
+                          <li>Temprature</li>
+                          <li>Humidity</li>
+                          <li>Wind Speed</li>
+                          <li>UV Index</li>
+                        </ul>
                     </div>
                     <!--Weather cards-->
                     <div><h2>5-Day Forcast:</h2></div>
@@ -143,8 +149,9 @@
     </div>
 
     <!-- scripts -->
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript" src="script.js"></script>
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script> -->
 </body>
 </html>

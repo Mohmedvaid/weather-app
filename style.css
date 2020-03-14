@@ -42,8 +42,27 @@ h1{
     height: 300px;
     margin: 1px;
     border-color: blue;
+    border: 1px solid #dadada;
+    border-radius: 15px;
+    margin: 10px;
 }
 
+li{
+    margin: 10px;
+}
+
+.basic-temp{
+    margin: 10px 10px;
+    padding: 40px 5px;
+}
+
+h2{
+    margin: 10px 20px;
+}
+
+.list-group-item{
+    border-radius: 10px;
+}
 
 
 
