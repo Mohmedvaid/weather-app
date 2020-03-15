@@ -66,6 +66,7 @@ $(document).ready(function () {
                 ////forecast()
                 var queryURL = `https://api.weatherbit.io/v2.0/forecast/daily?city=${city}&key=e504647e199d4c37b3d24db5eab9b660&units=i`
                 console.log(queryURL)
+                $(`.cards`).attr(`style`, `display: flex`);
                 $.ajax({
                     url: queryURL,
                     method: "GET"
@@ -73,6 +74,9 @@ $(document).ready(function () {
         
                     for (var j = 1; j < 7; j++) {
                         $(`#card${j}`).text(response.data[j].datetime)
+                        $(`#img${j}`).attr(`src`, `https://www.weatherbit.io/static/img/icons/${response.data[j].weather.icon}.png`)
+                        $(`#card-temp${j}`).text(`Temp: ${response.data[j].temp} F`)
+                        $(`#card-hum${j}`).text(`Humidity: ${response.data[j].rh}%`)
                         console.log(`#card${j}`)
                     }
                 })

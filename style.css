@@ -71,8 +71,9 @@ h2{
     text-transform: capitalize;
 }
 
-#card-img{
-    height: 40px;
+.card-img{
+    height: 60px;
+    width: 60px;
 }
 
 
