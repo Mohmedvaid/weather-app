@@ -29,11 +29,11 @@ $(document).ready(function () {
                     lon: response.coord.lon,
                     lat: response.coord.lat,
                     uvindex: getuv(),
-                    // day0: ["temp", "humidity"],
-                    // day1: ["temp", "humidity"],
-                    // day2: ["temp", "humidity"],
-                    // day3: ["temp", "humidity"],
-                    // day4: ["temp", "humidity"]
+                    day0: ["temp", "humidity"],
+                    day1: ["temp", "humidity"],
+                    day2: ["temp", "humidity"],
+                    day3: ["temp", "humidity"],
+                    day4: ["temp", "humidity"]
                 })
 
                 //second api call to get the city UV Index
@@ -52,7 +52,7 @@ $(document).ready(function () {
                 })
                 
             }
-           // console.log(weatherData[0].uvindex)
+    
                 
                 $(`.basic-temp`).empty()
                 $(`#city-name`).text(city)
@@ -63,10 +63,21 @@ $(document).ready(function () {
                         <li>UV Index: ${weatherData[i].uvindex} </li>
         
                 `)
+                ////forecast()
+                var queryURL = `https://api.weatherbit.io/v2.0/forecast/daily?city=${city}&key=e504647e199d4c37b3d24db5eab9b660&units=i`
+                console.log(queryURL)
+                $.ajax({
+                    url: queryURL,
+                    method: "GET"
+                }).then(function (response) {
+        
+                    for (var j = 1; j < 7; j++) {
+                        $(`#card${j}`).text(response.data[j].datetime)
+                        console.log(`#card${j}`)
+                    }
+                })
                 render()
                 i++
-                console.log(`LOL`)
-                console.log(`i: ${i}`)
                 console.log(weatherData)
 
             });
@@ -78,18 +89,20 @@ $(document).ready(function () {
 
     function forecast() {
         //this will get the 5 day forecase
-        var queryURL = `http://api.openweathermap.org/data/2.5/forecast?q=${city}&units=imperial&appid=7ac3b8ae4166269284ad86c8653c1b57`
+        var queryURL = `https://api.weatherbit.io/v2.0/forecast/daily?city=${city}&key=e504647e199d4c37b3d24db5eab9b660&units=i`
+        console.log(queryURL)
         $.ajax({
             url: queryURL,
             method: "GET"
         }).then(function (response) {
 
-            for (var j = 0; j < 5; j++) {
+            for (var j = 1; j < 6; j++) {
 
-                weatherData[i][`day${j}`] = [response.list[j].main.temp, response.list[j].main.humidity,response.list[j].dt_txt]
+                weatherData[i][`day${j}`] = [response.data[j].high_temp, response.data[j].rh]
+                
             }
         })
-
+        
     }
 
     function render(){
@@ -103,7 +116,6 @@ $(document).ready(function () {
     }
 
     currentweather();
-    //render();
     
 
 
