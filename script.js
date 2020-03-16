@@ -4,12 +4,28 @@ $(document).ready(function () {
 
     var queryURL
     var city
-    var i = 0;
+    var i;
     var queryURL2;
     var tempuvindex;
 
+
     function currentweather() {
         //this will get the current weather
+
+        if(JSON.parse(localStorage.getItem('weatherData'))){
+            weatherData = JSON.parse(localStorage.getItem('weatherData'))
+            i = weatherData.length;
+            for(var j = 0; j<weatherData.length; j++){
+                $(`.list-group`).prepend(`
+                <li class="list-group-item">${weatherData[j].name}</li>
+                `)
+
+            }
+        } else{
+            i=0;
+        }
+
+
         $(`#city-btn`).on('click', function () {
             //user value is saved in the city
             city = $(".form-control").val();
@@ -25,7 +41,7 @@ $(document).ready(function () {
                     name: city,
                     temprature: response.main.temp,
                     windspeed: response.wind.speed,
-                    humidity:response.main.humidity,
+                    humidity: response.main.humidity,
                     lon: response.coord.lon,
                     lat: response.coord.lat,
                     uvindex: getuv(),
@@ -37,23 +53,23 @@ $(document).ready(function () {
                 })
 
                 //second api call to get the city UV Index
-                
-                function getuv(){
-                queryURL2 = `http://api.openweathermap.org/data/2.5/uvi?lat=${response.coord.lat}&units=imperial&lon=${response.coord.lon}&appid=7ac3b8ae4166269284ad86c8653c1b57`
-                $.ajax({
-                    url: queryURL2,
-                    method: "GET"
-                }).then(function (response2) {
 
-                     tempuvindex= response2.value; 
-                     console.log(tempuvindex)
-                     return tempuvindex
+                function getuv() {
+                    queryURL2 = `http://api.openweathermap.org/data/2.5/uvi?lat=${response.coord.lat}&units=imperial&lon=${response.coord.lon}&appid=7ac3b8ae4166269284ad86c8653c1b57`
+                    $.ajax({
+                        url: queryURL2,
+                        method: "GET"
+                    }).then(function (response2) {
 
-                })
-                
-            }
-    
-                
+                        tempuvindex = response2.value;
+                        console.log(tempuvindex)
+                        return tempuvindex
+
+                    })
+
+                }
+
+
                 $(`.basic-temp`).empty()
                 $(`#city-name`).text(city)
                 $(`.basic-temp`).append(`
@@ -71,7 +87,7 @@ $(document).ready(function () {
                     url: queryURL,
                     method: "GET"
                 }).then(function (response) {
-        
+
                     for (var j = 1; j < 7; j++) {
                         $(`#card${j}`).text(response.data[j].datetime)
                         $(`#img${j}`).attr(`src`, `https://www.weatherbit.io/static/img/icons/${response.data[j].weather.icon}.png`)
@@ -82,10 +98,11 @@ $(document).ready(function () {
                 })
                 render()
                 i++
-                console.log(weatherData)
+                localStorage.setItem('weatherData', JSON.stringify(weatherData));
+                
 
             });
-            
+
         })
 
     }
@@ -103,24 +120,24 @@ $(document).ready(function () {
             for (var j = 1; j < 6; j++) {
 
                 weatherData[i][`day${j}`] = [response.data[j].high_temp, response.data[j].rh]
-                
+
             }
         })
-        
+
     }
 
-    function render(){
-        if(weatherData.length>9){
+    function render() {
+        if (weatherData.length > 9) {
             $('.list-group li:last-child').remove();
         }
-       
+
         $(`.list-group`).prepend(`
         <li class="list-group-item">${weatherData[i].name}</li>
         `)
     }
 
     currentweather();
-    
+
 
 
 

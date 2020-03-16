@@ -76,5 +76,11 @@ h2{
     width: 60px;
 }
 
+li{
+    list-style-type: none;
+}
+
+
+
 
 
