@@ -62,7 +62,7 @@ $(document).ready(function () {
                     }).then(function (response2) {
 
                         tempuvindex = response2.value;
-                        console.log(tempuvindex)
+                    
                         return tempuvindex
 
                     })
@@ -81,7 +81,7 @@ $(document).ready(function () {
                 `)
                 ////forecast()
                 var queryURL = `https://api.weatherbit.io/v2.0/forecast/daily?city=${city}&key=e504647e199d4c37b3d24db5eab9b660&units=i`
-                console.log(queryURL)
+                
                 $(`.cards`).attr(`style`, `display: flex`);
                 $.ajax({
                     url: queryURL,
@@ -93,7 +93,7 @@ $(document).ready(function () {
                         $(`#img${j}`).attr(`src`, `https://www.weatherbit.io/static/img/icons/${response.data[j].weather.icon}.png`)
                         $(`#card-temp${j}`).text(`Temp: ${response.data[j].temp} F`)
                         $(`#card-hum${j}`).text(`Humidity: ${response.data[j].rh}%`)
-                        console.log(`#card${j}`)
+                        
                     }
                 })
                 render()
@@ -111,7 +111,7 @@ $(document).ready(function () {
     function forecast() {
         //this will get the 5 day forecase
         var queryURL = `https://api.weatherbit.io/v2.0/forecast/daily?city=${city}&key=e504647e199d4c37b3d24db5eab9b660&units=i`
-        console.log(queryURL)
+       
         $.ajax({
             url: queryURL,
             method: "GET"
@@ -129,8 +129,11 @@ $(document).ready(function () {
     function render() {
         if (weatherData.length > 9) {
             $('.list-group li:last-child').remove();
+            weatherData.shift();
+            i = weatherData.length -1;
+            console.log(weatherData)
         }
-
+        
         $(`.list-group`).prepend(`
         <li class="list-group-item">${weatherData[i].name}</li>
         `)
