@@ -29,7 +29,7 @@ $(document).ready(function () {
         $(`#city-btn`).on('click', function () {
             //user value is saved in the city
             city = $(".form-control").val();
-            queryURL = `http://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=7ac3b8ae4166269284ad86c8653c1b57`
+            queryURL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=7ac3b8ae4166269284ad86c8653c1b57`
             //api call to get the current weather
             $.ajax({
                 url: queryURL,
@@ -55,7 +55,7 @@ $(document).ready(function () {
                 //second api call to get the city UV Index
 
                 function getuv() {
-                    queryURL2 = `http://api.openweathermap.org/data/2.5/uvi?lat=${response.coord.lat}&units=imperial&lon=${response.coord.lon}&appid=7ac3b8ae4166269284ad86c8653c1b57`
+                    queryURL2 = `https://api.openweathermap.org/data/2.5/uvi?lat=${response.coord.lat}&units=imperial&lon=${response.coord.lon}&appid=7ac3b8ae4166269284ad86c8653c1b57`
                     $.ajax({
                         url: queryURL2,
                         method: "GET"
