@@ -17,7 +17,7 @@ $(document).ready(function () {
         //this will check if weatherData array is in the local storage 
         if (JSON.parse(localStorage.getItem('weatherData'))) {
             weatherData = JSON.parse(localStorage.getItem('weatherData'))
-            i = weatherData.length;
+            i = weatherData.length -1 ;
             for (var j = 0; j < weatherData.length; j++) {
                 $(`.list-group`).prepend(`
                 <li class="list-group-item">${weatherData[j].name}</li>
@@ -27,6 +27,8 @@ $(document).ready(function () {
             i = 0;
         }
 
+        console.log('i: ', i)
+
 
 
         // this will get current weather of the city entered by the user
@@ -34,7 +36,7 @@ $(document).ready(function () {
             //user value is saved in the city
             city = $(".form-control").val();
             queryURL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=7ac3b8ae4166269284ad86c8653c1b57`
-            
+
             //api call to get the current weather
             $.ajax({
                 url: queryURL,
@@ -44,7 +46,10 @@ $(document).ready(function () {
                 iconimg = `http://openweathermap.org/img/wn/${response.weather[0].icon}@2x.png`
 
                 //pushing the data received in the array
+                // var weatherObject = {
+
                 weatherData.push({
+
                     name: city,
                     temprature: response.main.temp,
                     windspeed: response.wind.speed,
@@ -58,19 +63,39 @@ $(document).ready(function () {
                     day3: ["temp", "humidity"],
                     day4: ["temp", "humidity"]
                 })
+                //     })
+                //     name: city,
+                //     temprature: response.main.temp,
+                //     windspeed: response.wind.speed,
+                //     humidity: response.main.humidity,
+                //     lon: response.coord.lon,
+                //     lat: response.coord.lat,
+                //     uvindex: "test",
+                //     day0: ["temp", "humidity"],
+                //     day1: ["temp", "humidity"],
+                //     day2: ["temp", "humidity"],
+                //     day3: ["temp", "humidity"],
+                //     day4: ["temp", "humidity"]
+                // }
+                // weatherData.push(weatherObject)
+
+                // weatherObject.uvindex = 'thing'
 
                 //this will display the data received from api call
-                
-                $(`#main-img`).attr(`src`,iconimg).attr(`style`, `display: block`)
-                $(`.basic-temp`).empty()
-                $(`#city-name`).text(city)
-                $(`.basic-temp`).append(`
-                        <li>Temprature: ${weatherData[i].temprature}</li>
-                        <li>Humidity: ${weatherData[i].humidity}</li>
-                        <li>Wind Speed: ${weatherData[i].windspeed}</li>
-                        <li id="uv-index">UV Index: <p id="uv-num"> ${weatherData[i].uvindex}</p></li>
-        
-                `)
+
+                // $(`#main-img`).attr(`src`,iconimg).attr(`style`, `display: block`)
+                // $(`.basic-temp`).empty()
+                // $(`#city-name`).text(city)
+                // $(`.basic-temp`).append(`
+                //         <li>Temprature: ${weatherData[i].temprature}</li>
+                //         <li>Humidity: ${weatherData[i].humidity}</li>
+                //         <li>Wind Speed: ${weatherData[i].windspeed}</li>
+                //         <li id="uv-index">UV Index: <p id="uv-num"> ${weatherData[i].uvindex}</p></li>
+
+                // `)
+
+                console.log('1n api call : ', response)
+                console.log('i: ', i)
 
                 //second api call to get the city UV Index
                 queryURL2 = `https://api.openweathermap.org/data/2.5/uvi?lat=${response.coord.lat}&units=imperial&lon=${response.coord.lon}&appid=7ac3b8ae4166269284ad86c8653c1b57`
@@ -79,18 +104,36 @@ $(document).ready(function () {
                     method: "GET"
 
                 }).then(function (response2) {
-                    $(`#uv-num`).text(` ${response2.value}`)
+                    console.log('2n api call : ', response2)
+                    weatherData[0].uvindex = response2.value;
+                    i--;
+                    console.log('i: ',i)
+                    console.log(weatherData)
 
-                    if(response2.value <4){
+                    $(`#main-img`).attr(`src`, iconimg).attr(`style`, `display: block`)
+                    $(`.basic-temp`).empty()
+                    $(`#city-name`).text(city)
+                    $(`.basic-temp`).append(`
+                            <li>Temprature: ${weatherData[i].temperature}</li>
+                            <li>Humidity: ${weatherData[i].humidity}</li>
+                            <li>Wind Speed: ${weatherData[i].windspeed}</li>
+                            <li id="uv-index">UV Index: <p id="uv-num"> ${weatherData[i].uvindex}</p></li>
+            
+                    `)
+
+                    //$(`#uv-num`).text(` ${response2.value}`)
+
+
+                    if (response2.value < 4) {
                         $(`#uv-num`).attr(`class`, `bg-success`)
-                    }
-                    else if (response2.value<7){
+                    } else if (response2.value < 7) {
                         $(`#uv-num`).attr(`class`, `bg-warning`)
-                    }
-                    else{
+                    } else {
                         $(`#uv-num`).attr(`class`, `bg-danger`)
                     }
                 })
+
+
                 forecast(city)
                 render()
                 i++
@@ -137,7 +180,7 @@ $(document).ready(function () {
         `)
     }
 
-    
+
     currentweather();
 
     //ready ends
