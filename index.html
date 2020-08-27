@@ -31,104 +31,20 @@
                 <h1>Weather Dashboard</h1>
               </nav>
         </header>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="button" id="city-btn">Button</button>
+          </div>
+        </div>
 
         <!--content-->
-        <div class="grid">
-            <!--LEFT DIV-->
-            <div id="left">
-                <!-- searchform-->
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Enter a city!">
-                    <div class="input-group-append">
-                      <button id="city-btn" class="btn btn-primary" type="button">
-                        <i class="fa fa-search"></i>
-                      </button>
-                    </div>
-                  </div>
-
-                  <!--city lists-->
-                  <ul class="list-group">
-                  </ul>
-            </div>
-            
-            <!--RIGHT DIV-->
-            <div id="right">
-                <div>
-                    <!--Jumbo-->
-                    <div class="main-weather">
-                        <div>
-                          <div id="heading" style="display: flex;">
-                            <h2 id="city-name">Welcome to the WeatherFlow! Enter a city name to get started.</h2>
-                            <img id="main-img" style="display: none;">
-                          </div>
-                          </div>
-                        <ul class="basic-temp" style="list-style-type:none;">
-                        </ul>
-                    </div>
-                    <!--Weather cards-->
-                    <div><h2>5-Day Forcast:</h2></div>
-                    <div class="cards" style="display: none;">
-                        <!--card1-->
-                        <div class="card" style="width: 18rem;">
-                            <div class="card-body">
-                              <h5 id ="card1" class="card-title">07/07/2020</h5>
-                              <img id ="img1" class="card-img" alt="">
-                              
-                                <h5 id ="card-temp1" ></h5>
-                                <h5 id ="card-hum1"  ></h5>
-                              
-                            </div>
-                          </div>
-                          <!--card1-->
-                        <div class="card" style="width: 18rem;">
-                            <div class="card-body">
-                              <h5 id ="card2" class="card-title">Card title</h5>
-                              <img id ="img2" class="card-img" alt="">
-                    
-                                <h5 id ="card-temp2" ></h5>
-                                <h5 id ="card-hum2"  ></h5>
-                       
-                            </div>
-                          </div>
-                          <!--card1-->
-                        <div class="card" style="width: 18rem;">
-                            <div class="card-body">
-                              <h5 id ="card3" class="card-title">Card title</h5>
-                              <img id ="img3" class="card-img" alt="">
-
-                                <h5 id ="card-temp3" ></h5>
-                                <h5 id ="card-hum3"  ></h5>
-         
-                            </div>
-                          </div>
-                          <!--card1-->
-                        <div class="card" style="width: 18rem;">
-                            <div class="card-body">
-                              <h5 id ="card4" class="card-title">Card title</h5>
-                              <img id ="img4" class="card-img" alt="">
-                     
-                                <h5 id ="card-temp4" ></h5>
-                                <h5 id ="card-hum4"  ></h5>
-                            
-                            </div>
-                          </div>
-                          <!--card1-->
-                        <div class="card" style="width: 18rem;">
-                            <div class="card-body">
-                              <h5 id ="card5" class="card-title">Card title</h5>
-                              <img id ="img5" class="card-img" alt="">
-                              
-                                <h5 id ="card-temp5" ></h5>
-                                <h5 id ="card-hum5"  ></h5>
-                          
-                            </div>
-                          </div>
-                          
-                    </div>
-                </div>
-            </div>
-            
-
+        <div class="jumbotron">
+          <p class="display-4" id="city-name">Hello, world!</p>
+          <p class="lead" id="todays-temp"></p>
+          <hr class="my-4">
+          <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+          <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
         </div>
 
 
