@@ -38,7 +38,6 @@ $(document).ready(function () {
 
             //api call to get the current weather
             let response = await getWeatherData(queryURL)
-            console.log(response);
             let todaysWeather = {
                 city: response.city.name,
                 temp: response.list[0].main.temp,
@@ -49,7 +48,9 @@ $(document).ready(function () {
                 date: response.list[0].dt_txt.split(" ")[0]
             };
             renderTodaysWeather(todaysWeather);
-            getFiveDaysWeather(response);
+            const fiveDayWeather= getFiveDaysWeather(response);
+            const fiveDayCards =  buildFiveDayCards(fiveDayWeather)
+            renderFiveDayWeather(fiveDayCards);
 
             // localStorage.setItem('weatherData', JSON.stringify(weatherData));
             
@@ -94,8 +95,36 @@ $(document).ready(function () {
                 
             }
         }
-        console.log(nextDays);
+        console.log(nextDays)
+        return nextDays;
       }
+      
+      const buildFiveDayCards = (fiveDayWeather) =>{
+         return fiveDayWeather.map(day =>{
+             const newDate = converDate(day.dt_txt.split(" ")[0]).split("-")
+              return `<div class="card bg-light mb-3" style="max-width: 18rem;">
+              <div class="card-header">${newDate[0]} ${newDate[1]}</div>
+              <div class="card-body">
+                <h5 class="card-title">${day.main.temp}</h5>
+                <img src="http://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png"/>
+              </div>
+            </div>`
+          })
+
+      }
+
+      const renderFiveDayWeather = (cards) =>{
+        cards.forEach(card => {
+            $(`.five-day-cards`).append(card)
+        });
+      }
+
+      const converDate= (date)=>{
+          console.log(moment(date).format("ddd-Do"))
+        return moment(date).format("Do-MMM")
+      }
+      converDate(`12-25-1995`)
+      
 
     currentweather();
 
