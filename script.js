@@ -32,6 +32,7 @@ $(document).ready(function () {
 
         // this will get current weather of the city entered by the user
         $(`#city-btn`).on('click', async function () {
+
             //user value is saved in the city
             city = $(".form-control").val();
             queryURL = `http://api.openweathermap.org/data/2.5/forecast?appid=7ac3b8ae4166269284ad86c8653c1b57&units=imperial&q=${city}`
@@ -51,6 +52,8 @@ $(document).ready(function () {
             const fiveDayWeather= getFiveDaysWeather(response);
             const fiveDayCards =  buildFiveDayCards(fiveDayWeather)
             renderFiveDayWeather(fiveDayCards);
+                
+              
 
             // localStorage.setItem('weatherData', JSON.stringify(weatherData));
             
@@ -67,6 +70,7 @@ $(document).ready(function () {
     }
 
     getUV = (lat, lon) => {
+        $('#loading').show();
         $.ajax({
             url: `https://api.openweathermap.org/data/2.5/uvi?lat=${lat}&units=imperial&lon=${lon}&appid=7ac3b8ae4166269284ad86c8653c1b57`,
             method: "GET"
@@ -76,9 +80,18 @@ $(document).ready(function () {
     }
 
     const getWeatherData = async (queryURL) => {
+        $(`body`).prepend(`<div id="loading">
+                <img id="loading-image" src="/Assets/spinner.svg" alt="Loading..."/>
+              </div>`);
         let res = await $.ajax({
             url: queryURL,
-            method: "GET"
+            method: "GET",
+            complete: function(){
+                setTimeout(function(){
+                    $('#loading').hide();
+                }, 500); 
+                
+            }
         })
 
         return res;
@@ -107,6 +120,7 @@ $(document).ready(function () {
               <div class="card-body">
                 <h5 class="card-title">${day.main.temp}</h5>
                 <img src="http://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png"/>
+                <p>${day.weather[0].description}</p>
               </div>
             </div>`
           })
@@ -125,6 +139,9 @@ $(document).ready(function () {
       }
       converDate(`12-25-1995`)
       
+
+
+  
 
     currentweather();
 
