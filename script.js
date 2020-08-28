@@ -48,12 +48,16 @@ $(document).ready(function () {
                 lon:response.city.coord.lon,
                 date: response.list[0].dt_txt.split(" ")[0]
             };
+            
+            
+            let uvIndex = await getUV(todaysWeather.lat, todaysWeather.lon)
+            console.log(`UV index:  `+uvIndex)
+            const uvDiv = createDivUV(uvIndex)
+            appendEl(uvDiv, `#uv-index` );
             renderTodaysWeather(todaysWeather);
             const fiveDayWeather= getFiveDaysWeather(response);
             const fiveDayCards =  buildFiveDayCards(fiveDayWeather)
             renderFiveDayWeather(fiveDayCards);
-                
-              
 
             // localStorage.setItem('weatherData', JSON.stringify(weatherData));
             
@@ -69,32 +73,53 @@ $(document).ready(function () {
 
     }
 
-    getUV = (lat, lon) => {
-        $('#loading').show();
-        $.ajax({
+    const getUV = async (lat, lon) => {
+        const res = await $.ajax({
             url: `https://api.openweathermap.org/data/2.5/uvi?lat=${lat}&units=imperial&lon=${lon}&appid=7ac3b8ae4166269284ad86c8653c1b57`,
             method: "GET"
-        }).then(function(res){
-            return res.value;
         })
+         return res.value;
+    }
+
+    const createDivUV = (uv) =>{
+        if(uv<=2){
+            return `<div class="bg-success">${uv}</div>`
+        }
+        else if(uv<=5){
+            return `<div class=".bg-warning">${uv}</div>`
+        }
+        else if(uv<=7){
+            return `<div class=".bg-orange">${uv}</div>`
+        }
+        else {
+            return `<div class=".bg-danger">${uv}</div>`
+        }
+    }
+
+    const appendEl = (elemnt, appendTo) =>{
+        $(`${appendTo}`).append(elemnt);
     }
 
     const getWeatherData = async (queryURL) => {
-        $(`body`).prepend(`<div id="loading">
-                <img id="loading-image" src="/Assets/spinner.svg" alt="Loading..."/>
-              </div>`);
+        appendLoaderToBody();
         let res = await $.ajax({
             url: queryURL,
             method: "GET",
-            complete: function(){
-                setTimeout(function(){
-                    $('#loading').hide();
-                }, 500); 
-                
-            }
+            complete: removeLoader()
         })
-
         return res;
+      }
+
+      const appendLoaderToBody = () =>{
+        $(`body`).prepend(`<div id="loading">
+        <img id="loading-image" src="/Assets/spinner.svg" alt="Loading..."/>
+      </div>`);
+      }
+
+      const removeLoader = () =>{
+        setTimeout(function(){
+            $('#loading').hide();
+        }, 500); 
       }
 
       const getFiveDaysWeather = (response) =>{
