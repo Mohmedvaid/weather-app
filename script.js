@@ -133,13 +133,14 @@ $(document).ready(function () {
                 
             }
         }
+        console.log(nextDays)
         return nextDays;
       }
       
       const buildFiveDayCards = (fiveDayWeather) =>{
          return fiveDayWeather.map(day =>{
              const newDate = converDate(day.dt_txt.split(" ")[0]).split("-")
-              return `<div class="card bg-light mb-3" style="max-width: 18rem;">
+              return `<div class="card bg-light mb-3"">
               <div class="card-header">${newDate[0]} ${newDate[1]}</div>
               <div class="card-body">
                 <h5 class="card-title">${day.main.temp}</h5>

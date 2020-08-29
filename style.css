@@ -1,13 +1,29 @@
+/* background color */
+body{
+    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(9%,#f4f7ff),to(#85abbf));
+    background-repeat: no-repeat;
+    height: 100%;
+}
+
+
 h1{
     color: white;
 }
+/* cards */
+.card{
+    margin: 20px;
+    width: 100% !important;
+}
 .card-body{
     background-color: #c3c2c2;
+    display: flex;
+    align-items: center;
 }
 
 .five-day-cards{
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
 }
 
 /* loader styles */
