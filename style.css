@@ -4,27 +4,80 @@ body{
     background-repeat: no-repeat;
     height: 100%;
 }
-
-
 h1{
     color: white;
 }
+
+#container-main{
+  display: grid;
+  grid-template-columns: 25% 75%;
+}
+aside{
+  width: 100%;
+  margin: 0 !important;
+  padding: 30px 10px;
+}
+.container-main{
+  margin: 10px;
+  max-width: 700px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 20px;
+}
+
+.jumbotron{
+  display: flex;
+  width: 100%;
+  justify-content: space-evenly;
+  background-color: #ffffff !important;
+  border-radius: 1.3rem;
+  padding: 2rem 1rem !important;
+}
+.five-day-cards{
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+}
+#city-name{
+  font-size: 2rem ;
+}
 /* cards */
 .card{
-    margin: 20px;
+    margin: 0 !important;
     width: 100% !important;
 }
 .card-body{
-    background-color: #c3c2c2;
-    display: flex;
-    align-items: center;
+    background-color: #ffffff;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+.card-title, .date, .short-info{
+  margin: 0;
 }
 
-.five-day-cards{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+/* .five-day-cards:first-child{
+  border-radius: 50px 50px 0 0px;
 }
+.five-day-cards:first-child.card-body{
+  border-radius: 50px 50px 0 0px;
+} */
+
+ div.five-day-cards > div:nth-child(1){
+  border-radius: 50px 50px 0 0;
+}
+ div.five-day-cards > div:nth-child(1)>.card-body{
+  border-radius: 20px 20px 0 0;
+}
+ div.five-day-cards > div:last-child{
+  border-radius: 0 0 20px 20px;
+}
+ div.five-day-cards > div:last-child>.card-body{
+  border-radius: 0 0 20px 20px;
+}
+
 
 /* loader styles */
 #loading {
@@ -48,14 +101,14 @@ h1{
   /* Search field */
   .search-box{
     display: flex;
-    width: 400px;
-    /* justify-content: center; */
+    width: 100%;
     margin: auto;
     padding: 20px;
   }
 
-  .container-main{
-      margin: 10px;
+  .search-btn{
+    display: block !important;
+
   }
   /* uv index */
   .uv-num{
@@ -63,3 +116,19 @@ h1{
     padding: 7px;
     border-radius: 9px;
   }
+
+  .todays-img{
+    border-radius: 20px;
+    margin: 20px;
+    background-color: #b3ceff;
+    height: 100%;
+  }
+
+  /* tablets */
+  @media only screen and (max-device-width: 768px) {
+
+    #container-main{
+      display: flex;
+      flex-direction: column;
+    }
+}

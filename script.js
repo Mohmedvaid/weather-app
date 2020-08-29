@@ -69,8 +69,9 @@ $(document).ready(function () {
 
     renderTodaysWeather = (data) => {
         $(`#city-name`).text(`${Math.floor(data.temp)}${String.fromCharCode(8457)} - ${data.city}`);
+        $(`.todays-weather`).after(`<div class="todays-img"><img src="http://openweathermap.org/img/wn/${data.icon}@2x.png"/></div>`)
         $(`#todays-temp`).text(`Humidity: ${data.humidity}`);
-        $(`#uv-index`).after(`<img src="http://openweathermap.org/img/wn/${data.icon}@2x.png"/>`)
+        // $(`#uv-index`).after(`<img src="http://openweathermap.org/img/wn/${data.icon}@2x.png"/>`)
         // $(`.jumbotron`).append(``)
 
     }
@@ -99,7 +100,7 @@ $(document).ready(function () {
     }
 
     const appendEl = (elemnt, appendTo) =>{
-        $(`${appendTo}`).html(elemnt);
+        $(`${appendTo}`).append(elemnt);
     }
 
     const getWeatherData = async (queryURL) => {
@@ -139,13 +140,13 @@ $(document).ready(function () {
       
       const buildFiveDayCards = (fiveDayWeather) =>{
          return fiveDayWeather.map(day =>{
-             const newDate = converDate(day.dt_txt.split(" ")[0]).split("-")
+             const newDate = converDate(day.dt_txt.split(" ")[0]).split("-");
+             const newDescription = uppercaseFirst(day.weather[0].description)
               return `<div class="card bg-light mb-3"">
-              <div class="card-header">${newDate[0]} ${newDate[1]}</div>
               <div class="card-body">
+              <div class="date">${newDate[0]} ${newDate[1]}</div>
                 <h5 class="card-title">${day.main.temp}</h5>
-                <img src="http://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png"/>
-                <p>${day.weather[0].description}</p>
+                <p class="short-info">${newDescription}</p>
               </div>
             </div>`
           })
@@ -158,10 +159,13 @@ $(document).ready(function () {
         });
       }
 
-      const converDate= (date)=>{
+      const converDate = (date)=>{
         return moment(date).format("Do-MMM")
       }
-      converDate(`12-25-1995`)
+      
+      const uppercaseFirst = (string) =>{
+        return string.charAt(0).toUpperCase() + string.slice(1);
+      }
       
 
 
