@@ -28,3 +28,22 @@ h1{
     position: absolute;
     z-index: 100;
   }
+
+  /* Search field */
+  .search-box{
+    display: flex;
+    width: 400px;
+    /* justify-content: center; */
+    margin: auto;
+    padding: 20px;
+  }
+
+  .container-main{
+      margin: 10px;
+  }
+  /* uv index */
+  .uv-num{
+    color: white;
+    padding: 7px;
+    border-radius: 9px;
+  }

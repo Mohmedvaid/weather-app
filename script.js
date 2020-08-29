@@ -32,7 +32,7 @@ $(document).ready(function () {
 
         // this will get current weather of the city entered by the user
         $(`#city-btn`).on('click', async function () {
-
+            appendLoaderToBody();
             //user value is saved in the city
             city = $(".form-control").val();
             queryURL = `http://api.openweathermap.org/data/2.5/forecast?appid=7ac3b8ae4166269284ad86c8653c1b57&units=imperial&q=${city}`
@@ -53,11 +53,13 @@ $(document).ready(function () {
             let uvIndex = await getUV(todaysWeather.lat, todaysWeather.lon)
             console.log(`UV index:  `+uvIndex)
             const uvDiv = createDivUV(uvIndex)
-            appendEl(uvDiv, `#uv-index` );
+            appendEl(`UV: ${uvDiv}`, `#uv-index` );
             renderTodaysWeather(todaysWeather);
             const fiveDayWeather= getFiveDaysWeather(response);
             const fiveDayCards =  buildFiveDayCards(fiveDayWeather)
             renderFiveDayWeather(fiveDayCards);
+            removeLoader()
+            $(".form-control").val("");
 
             // localStorage.setItem('weatherData', JSON.stringify(weatherData));
             
@@ -66,10 +68,10 @@ $(document).ready(function () {
     }
 
     renderTodaysWeather = (data) => {
-        $(`#city-name`).empty().append(data.city);
-        $(`#todays-temp`).empty().append(`Temprature: ${data.temp} `);
-        $(`#todays-temp`).append(`Humidity: ${data.humidity}`);
-        $(`.jumbotron`).append(`<img src="http://openweathermap.org/img/wn/${data.icon}@2x.png"/>`)
+        $(`#city-name`).text(`${Math.floor(data.temp)}${String.fromCharCode(8457)} - ${data.city}`);
+        $(`#todays-temp`).text(`Humidity: ${data.humidity}`);
+        $(`#uv-index`).after(`<img src="http://openweathermap.org/img/wn/${data.icon}@2x.png"/>`)
+        // $(`.jumbotron`).append(``)
 
     }
 
@@ -83,29 +85,27 @@ $(document).ready(function () {
 
     const createDivUV = (uv) =>{
         if(uv<=2){
-            return `<div class="bg-success">${uv}</div>`
+            return `<span class="bg-success uv-num">${uv}</span>`
         }
         else if(uv<=5){
-            return `<div class=".bg-warning">${uv}</div>`
+            return `<span class="bg-warning uv-num">${uv}</span>`
         }
         else if(uv<=7){
-            return `<div class=".bg-orange">${uv}</div>`
+            return `<span class="bg-orange uv-num">${uv}</span>`
         }
         else {
-            return `<div class=".bg-danger">${uv}</div>`
+            return `<span class="bg-danger uv-num">${uv}</span>`
         }
     }
 
     const appendEl = (elemnt, appendTo) =>{
-        $(`${appendTo}`).append(elemnt);
+        $(`${appendTo}`).html(elemnt);
     }
 
     const getWeatherData = async (queryURL) => {
-        appendLoaderToBody();
         let res = await $.ajax({
             url: queryURL,
-            method: "GET",
-            complete: removeLoader()
+            method: "GET"
         })
         return res;
       }
@@ -118,8 +118,8 @@ $(document).ready(function () {
 
       const removeLoader = () =>{
         setTimeout(function(){
-            $('#loading').hide();
-        }, 500); 
+            $('#loading').remove();
+        }, 200); 
       }
 
       const getFiveDaysWeather = (response) =>{
@@ -133,7 +133,6 @@ $(document).ready(function () {
                 
             }
         }
-        console.log(nextDays)
         return nextDays;
       }
       
@@ -159,7 +158,6 @@ $(document).ready(function () {
       }
 
       const converDate= (date)=>{
-          console.log(moment(date).format("ddd-Do"))
         return moment(date).format("Do-MMM")
       }
       converDate(`12-25-1995`)
