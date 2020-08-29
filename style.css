@@ -52,11 +52,16 @@ aside{
 .card-body{
     background-color: #ffffff;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    align-items: center;
 }
 .card-title, .date, .short-info{
   margin: 0;
 }
+.orange-bg{
+  background-color: orange;
+}
+
 
 /* .five-day-cards:first-child{
   border-radius: 50px 50px 0 0px;
@@ -76,6 +81,9 @@ aside{
 }
  div.five-day-cards > div:last-child>.card-body{
   border-radius: 0 0 20px 20px;
+}
+.five-day-img{
+  width: 50%;
 }
 
 

@@ -33,6 +33,7 @@ $(document).ready(function () {
         // this will get current weather of the city entered by the user
         $(`#city-btn`).on('click', async function () {
             appendLoaderToBody();
+            clearOldData();
             //user value is saved in the city
             city = $(".form-control").val();
             queryURL = `http://api.openweathermap.org/data/2.5/forecast?appid=7ac3b8ae4166269284ad86c8653c1b57&units=imperial&q=${city}`
@@ -46,13 +47,15 @@ $(document).ready(function () {
                 icon: response.list[0].weather[0].icon,
                 lat: response.city.coord.lat,
                 lon:response.city.coord.lon,
-                date: response.list[0].dt_txt.split(" ")[0]
+                date: response.list[0].dt_txt.split(" ")[0],
+                wind: response.list[0].wind.speed
             };
             
             
             let uvIndex = await getUV(todaysWeather.lat, todaysWeather.lon)
-            console.log(`UV index:  `+uvIndex)
+            console.log(`UV index:  ` + uvIndex)
             const uvDiv = createDivUV(uvIndex)
+            $(`#uv-index`).empty();
             appendEl(`UV: ${uvDiv}`, `#uv-index` );
             renderTodaysWeather(todaysWeather);
             const fiveDayWeather= getFiveDaysWeather(response);
@@ -67,10 +70,17 @@ $(document).ready(function () {
 
     }
 
-    renderTodaysWeather = (data) => {
+    const clearOldData = () => {
+        $(`#city-name`).text("");
+        $(`.five-day-cards`).empty();
+        $(`.todays-img`).remove();
+    }
+
+    const renderTodaysWeather = (data) => {
         $(`#city-name`).text(`${Math.floor(data.temp)}${String.fromCharCode(8457)} - ${data.city}`);
         $(`.todays-weather`).after(`<div class="todays-img"><img src="http://openweathermap.org/img/wn/${data.icon}@2x.png"/></div>`)
         $(`#todays-temp`).text(`Humidity: ${data.humidity}`);
+        $(`#wind`).text(`Wind: ${data.wind} MPH`)
         // $(`#uv-index`).after(`<img src="http://openweathermap.org/img/wn/${data.icon}@2x.png"/>`)
         // $(`.jumbotron`).append(``)
 
@@ -89,10 +99,10 @@ $(document).ready(function () {
             return `<span class="bg-success uv-num">${uv}</span>`
         }
         else if(uv<=5){
-            return `<span class="bg-warning uv-num">${uv}</span>`
+            return `<span class="orange-bg uv-num">${uv}</span>`
         }
-        else if(uv<=7){
-            return `<span class="bg-orange uv-num">${uv}</span>`
+        else if(uv<=8){
+            return `<span class="bg-warning uv-num">${uv}</span>`
         }
         else {
             return `<span class="bg-danger uv-num">${uv}</span>`
@@ -139,14 +149,17 @@ $(document).ready(function () {
       }
       
       const buildFiveDayCards = (fiveDayWeather) =>{
+          console.log(fiveDayWeather)
          return fiveDayWeather.map(day =>{
              const newDate = converDate(day.dt_txt.split(" ")[0]).split("-");
              const newDescription = uppercaseFirst(day.weather[0].description)
               return `<div class="card bg-light mb-3"">
               <div class="card-body">
               <div class="date">${newDate[0]} ${newDate[1]}</div>
-                <h5 class="card-title">${day.main.temp}</h5>
+                <h5 class="card-title">${day.main.temp} ${String.fromCharCode(8457)}</h5>
                 <p class="short-info">${newDescription}</p>
+                <img class="five-day-img" src="http://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png"/>
+                
               </div>
             </div>`
           })
