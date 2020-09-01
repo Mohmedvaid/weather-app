@@ -10,8 +10,9 @@ $(document).ready(function () {
             cityArray = JSON.parse(localStorage.getItem('cityArray'))
             appendLoaderToBody();
             clearOldData();
-            getAndRenderWeather(cityArray[cityArray.length-1]);
+            getAndRenderWeather(cityArray[cityArray.length - 1]);
             renderCities(cityArray);
+            removeLoader();
         }
 
 
@@ -22,20 +23,47 @@ $(document).ready(function () {
             clearOldData();
             //user value is saved in the city
             let city = $(".form-control").val();
-            await getAndRenderWeather(city);
+            city = await getAndRenderWeather(city);
 
             cityArray.unshift(city);
             checkCityArrayLength(cityArray);
             localStorage.setItem('cityArray', JSON.stringify(cityArray));
             $(`#cities`).remove();
             renderCities(cityArray);
-
-
+            removeLoader();
         })
     }
 
-    const checkCityArrayLength  = (cityArray) =>{
-        if(cityArray.length === 6){
+    $(document).on(`click`,`.city-btn`, async function () {
+        let city = $(this).text();
+        appendLoaderToBody();
+        clearOldData();
+        await getAndRenderWeather(city);
+        removeLoader();
+    })
+
+
+    const getAndRenderWeather = async (city) => {
+        let queryURL = `http://api.openweathermap.org/data/2.5/forecast?appid=7ac3b8ae4166269284ad86c8653c1b57&units=imperial&q=${city}`
+        let response = await getWeatherData(queryURL);
+        let todaysWeather = createWeatherObj(response);
+
+        let uvIndex = await getUV(todaysWeather.lat, todaysWeather.lon)
+        const uvDiv = createDivUV(uvIndex);
+        $(`#uv-index`).empty();
+        appendEl(`UV: ${uvDiv}`, `#uv-index`);
+
+        renderTodaysWeather(todaysWeather);
+        const fiveDayWeather = getFiveDaysWeather(response);
+        const fiveDayCards = buildFiveDayCards(fiveDayWeather)
+        renderFiveDayWeather(fiveDayCards);
+
+        $(".form-control").val("");
+        return todaysWeather.city;
+
+    }
+    const checkCityArrayLength = (cityArray) => {
+        if (cityArray.length === 6) {
             cityArray.pop();
         }
     }
@@ -53,27 +81,6 @@ $(document).ready(function () {
         };
 
     }
-
-    const getAndRenderWeather = async (city) => {
-        let queryURL = `http://api.openweathermap.org/data/2.5/forecast?appid=7ac3b8ae4166269284ad86c8653c1b57&units=imperial&q=${city}`
-        let response = await getWeatherData(queryURL);
-        let todaysWeather = createWeatherObj(response);
-
-        let uvIndex = await getUV(todaysWeather.lat, todaysWeather.lon)
-        const uvDiv = createDivUV(uvIndex);
-        $(`#uv-index`).empty();
-        appendEl(`UV: ${uvDiv}`, `#uv-index`);
-
-        renderTodaysWeather(todaysWeather);
-        const fiveDayWeather = getFiveDaysWeather(response);
-        const fiveDayCards = buildFiveDayCards(fiveDayWeather)
-        renderFiveDayWeather(fiveDayCards);
-
-        removeLoader();
-        $(".form-control").val("");
-
-    }
-
     const renderCities = (cityArray) => {
         $(`aside`).append(`<div id="cities">${
             cityArray.map(city =>{
