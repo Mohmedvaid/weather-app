@@ -13,12 +13,14 @@ $(document).ready(function () {
             getAndRenderWeather(cityArray[cityArray.length - 1]);
             renderCities(cityArray);
             removeLoader();
+            initialPage();
         }
 
 
 
         // this will get current weather of the city entered by the user
         $(`#city-btn`).on('click', async function () {
+            
             appendLoaderToBody();
             clearOldData();
             //user value is saved in the city
@@ -31,6 +33,7 @@ $(document).ready(function () {
             $(`#cities`).remove();
             renderCities(cityArray);
             removeLoader();
+            initialPage();
         })
     }
 
@@ -84,7 +87,7 @@ $(document).ready(function () {
     const renderCities = (cityArray) => {
         $(`aside`).append(`<div id="cities">${
             cityArray.map(city =>{
-                return `<button class="btn btn-primary m-1 city-btn">${city}</button>`
+                return `<button class="city-btn btn-hover grad-color animate__animated animate__bounceInDown">${city}</button>`
             }).join(" ")
         }</div>`)
     }
@@ -163,12 +166,13 @@ $(document).ready(function () {
 
     const buildFiveDayCards = (fiveDayWeather) => {
         return fiveDayWeather.map(day => {
+            let newTemp = Math.floor(day.main.temp)
             const newDate = converDate(day.dt_txt.split(" ")[0]).split("-");
             const newDescription = uppercaseFirst(day.weather[0].description)
             return `<div class="card bg-light mb-3"">
               <div class="card-body">
               <div class="date">${newDate[0]} ${newDate[1]}</div>
-                <h5 class="card-title">${day.main.temp} ${String.fromCharCode(8457)}</h5>
+                <h5 class="card-title">${newTemp} ${String.fromCharCode(8457)}</h5>
                 <p class="short-info">${newDescription}</p>
                 <img class="five-day-img" src="http://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png"/>
                 
@@ -191,6 +195,19 @@ $(document).ready(function () {
     const uppercaseFirst = (string) => {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
+
+    const initialPage = () => {
+        let val = $(`p#city-name`).text()
+        console.log(val)
+        if(val === `Enter a city name!`){
+            $(`aside`).addClass(`span-2-col`);
+            $(`.container-main`).addClass(`span-no-data`);
+        }else{
+            $(`aside`).removeClass(`span-2-col`);
+        
+        }
+    }
+    initialPage();
 
     currentweather();
 
