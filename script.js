@@ -1,18 +1,12 @@
 $(document).ready(function () {
 
     let cityArray = [];
-    // let isCityInLocalStorage = false;
-
-
-
-
 
     function currentweather() {
         //this will get the current weather
 
         //this will check if weatherData array is in the local storage 
         if (JSON.parse(localStorage.getItem('cityArray'))) {
-            // isCityInLocalStorage = true;
             cityArray = JSON.parse(localStorage.getItem('cityArray'))
             appendLoaderToBody();
             clearOldData();
@@ -30,28 +24,20 @@ $(document).ready(function () {
             let city = $(".form-control").val();
             await getAndRenderWeather(city);
 
-            //api call to get the current weather
-            // let response = await getWeatherData(queryURL);
-            // let todaysWeather = createWeatherObj(response);
-
-            // let uvIndex = await getUV(todaysWeather.lat, todaysWeather.lon)
-            // const uvDiv = createDivUV(uvIndex)
-            // $(`#uv-index`).empty();
-            // appendEl(`UV: ${uvDiv}`, `#uv-index` );
-            // renderTodaysWeather(todaysWeather);
-            // const fiveDayWeather= getFiveDaysWeather(response);
-            // const fiveDayCards =  buildFiveDayCards(fiveDayWeather)
-            // renderFiveDayWeather(fiveDayCards);
-            // removeLoader()
-            // $(".form-control").val("");
-
-            cityArray.push(city);
+            cityArray.unshift(city);
+            checkCityArrayLength(cityArray);
             localStorage.setItem('cityArray', JSON.stringify(cityArray));
             $(`#cities`).remove();
             renderCities(cityArray);
 
 
         })
+    }
+
+    const checkCityArrayLength  = (cityArray) =>{
+        if(cityArray.length === 6){
+            cityArray.pop();
+        }
     }
 
     const createWeatherObj = (response) => {
@@ -91,7 +77,7 @@ $(document).ready(function () {
     const renderCities = (cityArray) => {
         $(`aside`).append(`<div id="cities">${
             cityArray.map(city =>{
-                return `<button class="btn btn-primary m-1 city">${city}</button>`
+                return `<button class="btn btn-primary m-1 city-btn">${city}</button>`
             }).join(" ")
         }</div>`)
     }
@@ -107,8 +93,6 @@ $(document).ready(function () {
         $(`.todays-weather`).after(`<div class="todays-img"><img src="http://openweathermap.org/img/wn/${data.icon}@2x.png"/></div>`)
         $(`#todays-temp`).text(`Humidity: ${data.humidity}`);
         $(`#wind`).text(`Wind: ${data.wind} MPH`)
-        // $(`#uv-index`).after(`<img src="http://openweathermap.org/img/wn/${data.icon}@2x.png"/>`)
-        // $(`.jumbotron`).append(``)
 
     }
 
@@ -167,12 +151,10 @@ $(document).ready(function () {
 
             }
         }
-        console.log(nextDays)
         return nextDays;
     }
 
     const buildFiveDayCards = (fiveDayWeather) => {
-        console.log(fiveDayWeather)
         return fiveDayWeather.map(day => {
             const newDate = converDate(day.dt_txt.split(" ")[0]).split("-");
             const newDescription = uppercaseFirst(day.weather[0].description)
@@ -202,10 +184,6 @@ $(document).ready(function () {
     const uppercaseFirst = (string) => {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
-
-
-
-
 
     currentweather();
 
