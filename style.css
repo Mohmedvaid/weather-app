@@ -1,21 +1,37 @@
+html, body {min-height: 100%;}
 /* background color */
 body{
-    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(9%,#f4f7ff),to(#85abbf));
+    /* background-image: -webkit-gradient(linear,left top,left bottom,color-stop(9%,#f4f7ff),to(#85abbf)); */
+    background-image: linear-gradient(#f4f7ff, #85abbf);
     background-repeat: no-repeat;
     height: 100%;
+    background-size: cover;
 }
 h1{
     color: white;
+}
+.nav-bg{
+  background-image: linear-gradient(#73cfff, #85abbf);
 }
 
 #container-main{
   display: grid;
   grid-template-columns: 25% 75%;
 }
-aside{
+/* aside{
   width: 100%;
   margin: 0 !important;
   padding: 30px 10px;
+} */
+.btn-blue {
+  color: #fff;
+  background-color: #0495c9;
+  border-color: #357ebd; /*set the color you want here*/
+}
+.btn-blue:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open>.dropdown-toggle.btn-primary {
+  color: #fff;
+  background-color: #00b3db;
+  border-color: #285e8e; /*set the color you want here*/
 }
 .container-main{
   margin: 10px;
@@ -25,6 +41,7 @@ aside{
   align-items: center;
   width: 100%;
   padding: 20px;
+  justify-self: center;
 }
 
 .jumbotron{
@@ -39,7 +56,7 @@ aside{
   display: flex;
   width: 100%;
   flex-direction: column;
-  align-items: center;
+align-self: center;
 }
 #city-name{
   font-size: 2rem ;
@@ -62,14 +79,6 @@ aside{
   background-color: orange;
 }
 
-
-/* .five-day-cards:first-child{
-  border-radius: 50px 50px 0 0px;
-}
-.five-day-cards:first-child.card-body{
-  border-radius: 50px 50px 0 0px;
-} */
-
  div.five-day-cards > div:nth-child(1){
   border-radius: 50px 50px 0 0;
 }
@@ -84,6 +93,12 @@ aside{
 }
 .five-day-img{
   width: 50%;
+}
+
+.date, .card-title, .short-info, .five-day-img{
+  font-size: 1rem;
+  justify-items: center;
+  align-items: center;
 }
 
 
@@ -110,13 +125,19 @@ aside{
   .search-box{
     display: flex;
     width: 100%;
-    margin: auto;
-    padding: 20px;
+    margin: 0 !important;
+    padding: 30px 10px;
   }
 
   .search-btn{
     display: block !important;
 
+  }
+
+  #cities{
+    display: flex;
+    flex-direction: column;
+    padding: .5rem 1rem;
   }
   /* uv index */
   .uv-num{

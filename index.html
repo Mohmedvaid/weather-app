@@ -26,24 +26,27 @@
 
 <body>
   <header>
-    <nav class="navbar navbar-dark bg-dark justify-content-center">
+    <nav class="navbar navbar-dark nav-bg justify-content-center">
         <h1>Weather Dashboard</h1>
       </nav>
 </header>
   
     <div id="container-main">
-        <aside class="input-group mb-3 search-box">
+      <aside>
+        <div class="input-group mb-3 search-box">
           <input type="text" class="form-control" placeholder="City" aria-label="City" aria-describedby="button-addon2">
           <div class="input-group-append search-btn">
-            <button class="btn btn-outline-secondary" type="button" id="city-btn">Search</button>
+            <button class="btn btn-blue btn-outline-secondary" type="button" id="city-btn">Search</button>
           </div>
-        </aside>
+        </div>
+
+      </aside>
 
         <!--content-->
         <section class="container-main">
           <div class="jumbotron">
             <div class="todays-weather">
-              <p class="display-4" id="city-name"></p>
+              <p class="display-4" id="city-name">Enter a city name!</p>
               <p class="lead" id="todays-temp"></p>
               <p id="uv-index"></p>
               <p id="wind"></p>

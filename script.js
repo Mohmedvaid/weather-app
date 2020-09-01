@@ -1,12 +1,7 @@
 $(document).ready(function () {
 
-    let weatherData = [];
-    let queryURL
-    let city
-    let i = 0;
-    let queryURL2;
-    let iconimg
-    let weatherURL = "http://api.openweathermap.org/data/2.5/forecast?appid=7ac3b8ae4166269284ad86c8653c1b57&units=imperial&q="
+    let cityArray = [];
+    // let isCityInLocalStorage = false;
 
 
 
@@ -15,18 +10,15 @@ $(document).ready(function () {
     function currentweather() {
         //this will get the current weather
 
-        // //this will check if weatherData array is in the local storage 
-        // if (JSON.parse(localStorage.getItem('weatherData'))) {
-        //     weatherData = JSON.parse(localStorage.getItem('weatherData'))
-        //     i = weatherData.length -1 ;
-        //     for (var j = 0; j < weatherData.length; j++) {
-        //         $(`.list-group`).prepend(`
-        //         <li class="list-group-item">${weatherData[j].name}</li>
-        //         `)
-        //     }
-        // } else {
-        //     i = 0;
-        // }
+        //this will check if weatherData array is in the local storage 
+        if (JSON.parse(localStorage.getItem('cityArray'))) {
+            // isCityInLocalStorage = true;
+            cityArray = JSON.parse(localStorage.getItem('cityArray'))
+            appendLoaderToBody();
+            clearOldData();
+            getAndRenderWeather(cityArray[cityArray.length-1]);
+            renderCities(cityArray);
+        }
 
 
 
@@ -35,39 +27,73 @@ $(document).ready(function () {
             appendLoaderToBody();
             clearOldData();
             //user value is saved in the city
-            city = $(".form-control").val();
-            queryURL = `http://api.openweathermap.org/data/2.5/forecast?appid=7ac3b8ae4166269284ad86c8653c1b57&units=imperial&q=${city}`
+            let city = $(".form-control").val();
+            await getAndRenderWeather(city);
 
             //api call to get the current weather
-            let response = await getWeatherData(queryURL)
-            let todaysWeather = {
-                city: response.city.name,
-                temp: response.list[0].main.temp,
-                humidity: response.list[0].main.humidity,
-                icon: response.list[0].weather[0].icon,
-                lat: response.city.coord.lat,
-                lon:response.city.coord.lon,
-                date: response.list[0].dt_txt.split(" ")[0],
-                wind: response.list[0].wind.speed
-            };
-            
-            
-            let uvIndex = await getUV(todaysWeather.lat, todaysWeather.lon)
-            console.log(`UV index:  ` + uvIndex)
-            const uvDiv = createDivUV(uvIndex)
-            $(`#uv-index`).empty();
-            appendEl(`UV: ${uvDiv}`, `#uv-index` );
-            renderTodaysWeather(todaysWeather);
-            const fiveDayWeather= getFiveDaysWeather(response);
-            const fiveDayCards =  buildFiveDayCards(fiveDayWeather)
-            renderFiveDayWeather(fiveDayCards);
-            removeLoader()
-            $(".form-control").val("");
+            // let response = await getWeatherData(queryURL);
+            // let todaysWeather = createWeatherObj(response);
 
-            // localStorage.setItem('weatherData', JSON.stringify(weatherData));
-            
+            // let uvIndex = await getUV(todaysWeather.lat, todaysWeather.lon)
+            // const uvDiv = createDivUV(uvIndex)
+            // $(`#uv-index`).empty();
+            // appendEl(`UV: ${uvDiv}`, `#uv-index` );
+            // renderTodaysWeather(todaysWeather);
+            // const fiveDayWeather= getFiveDaysWeather(response);
+            // const fiveDayCards =  buildFiveDayCards(fiveDayWeather)
+            // renderFiveDayWeather(fiveDayCards);
+            // removeLoader()
+            // $(".form-control").val("");
+
+            cityArray.push(city);
+            localStorage.setItem('cityArray', JSON.stringify(cityArray));
+            $(`#cities`).remove();
+            renderCities(cityArray);
+
+
         })
+    }
 
+    const createWeatherObj = (response) => {
+        return {
+            city: response.city.name,
+            temp: response.list[0].main.temp,
+            humidity: response.list[0].main.humidity,
+            icon: response.list[0].weather[0].icon,
+            lat: response.city.coord.lat,
+            lon: response.city.coord.lon,
+            date: response.list[0].dt_txt.split(" ")[0],
+            wind: response.list[0].wind.speed
+        };
+
+    }
+
+    const getAndRenderWeather = async (city) => {
+        let queryURL = `http://api.openweathermap.org/data/2.5/forecast?appid=7ac3b8ae4166269284ad86c8653c1b57&units=imperial&q=${city}`
+        let response = await getWeatherData(queryURL);
+        let todaysWeather = createWeatherObj(response);
+
+        let uvIndex = await getUV(todaysWeather.lat, todaysWeather.lon)
+        const uvDiv = createDivUV(uvIndex);
+        $(`#uv-index`).empty();
+        appendEl(`UV: ${uvDiv}`, `#uv-index`);
+
+        renderTodaysWeather(todaysWeather);
+        const fiveDayWeather = getFiveDaysWeather(response);
+        const fiveDayCards = buildFiveDayCards(fiveDayWeather)
+        renderFiveDayWeather(fiveDayCards);
+
+        removeLoader();
+        $(".form-control").val("");
+
+    }
+
+    const renderCities = (cityArray) => {
+        $(`aside`).append(`<div id="cities">${
+            cityArray.map(city =>{
+                return `<button class="btn btn-primary m-1 city">${city}</button>`
+            }).join(" ")
+        }</div>`)
     }
 
     const clearOldData = () => {
@@ -91,25 +117,22 @@ $(document).ready(function () {
             url: `https://api.openweathermap.org/data/2.5/uvi?lat=${lat}&units=imperial&lon=${lon}&appid=7ac3b8ae4166269284ad86c8653c1b57`,
             method: "GET"
         })
-         return res.value;
+        return res.value;
     }
 
-    const createDivUV = (uv) =>{
-        if(uv<=2){
+    const createDivUV = (uv) => {
+        if (uv <= 2) {
             return `<span class="bg-success uv-num">${uv}</span>`
-        }
-        else if(uv<=5){
+        } else if (uv <= 5) {
             return `<span class="orange-bg uv-num">${uv}</span>`
-        }
-        else if(uv<=8){
+        } else if (uv <= 8) {
             return `<span class="bg-warning uv-num">${uv}</span>`
-        }
-        else {
+        } else {
             return `<span class="bg-danger uv-num">${uv}</span>`
         }
     }
 
-    const appendEl = (elemnt, appendTo) =>{
+    const appendEl = (elemnt, appendTo) => {
         $(`${appendTo}`).append(elemnt);
     }
 
@@ -119,41 +142,41 @@ $(document).ready(function () {
             method: "GET"
         })
         return res;
-      }
+    }
 
-      const appendLoaderToBody = () =>{
+    const appendLoaderToBody = () => {
         $(`body`).prepend(`<div id="loading">
         <img id="loading-image" src="/Assets/spinner.svg" alt="Loading..."/>
       </div>`);
-      }
+    }
 
-      const removeLoader = () =>{
-        setTimeout(function(){
+    const removeLoader = () => {
+        setTimeout(function () {
             $('#loading').remove();
-        }, 200); 
-      }
+        }, 200);
+    }
 
-      const getFiveDaysWeather = (response) =>{
+    const getFiveDaysWeather = (response) => {
         let date = "";
         let nextDays = [];
-        for(let i = 0; i<response.list.length; i++){
-            if(date !== response.list[i].dt_txt.split(" ")[0]){
-                
+        for (let i = 0; i < response.list.length; i++) {
+            if (date !== response.list[i].dt_txt.split(" ")[0]) {
+
                 nextDays.push(response.list[i]);
                 date = response.list[i].dt_txt.split(" ")[0];
-                
+
             }
         }
         console.log(nextDays)
         return nextDays;
-      }
-      
-      const buildFiveDayCards = (fiveDayWeather) =>{
-          console.log(fiveDayWeather)
-         return fiveDayWeather.map(day =>{
-             const newDate = converDate(day.dt_txt.split(" ")[0]).split("-");
-             const newDescription = uppercaseFirst(day.weather[0].description)
-              return `<div class="card bg-light mb-3"">
+    }
+
+    const buildFiveDayCards = (fiveDayWeather) => {
+        console.log(fiveDayWeather)
+        return fiveDayWeather.map(day => {
+            const newDate = converDate(day.dt_txt.split(" ")[0]).split("-");
+            const newDescription = uppercaseFirst(day.weather[0].description)
+            return `<div class="card bg-light mb-3"">
               <div class="card-body">
               <div class="date">${newDate[0]} ${newDate[1]}</div>
                 <h5 class="card-title">${day.main.temp} ${String.fromCharCode(8457)}</h5>
@@ -162,27 +185,27 @@ $(document).ready(function () {
                 
               </div>
             </div>`
-          })
+        })
 
-      }
+    }
 
-      const renderFiveDayWeather = (cards) =>{
+    const renderFiveDayWeather = (cards) => {
         cards.forEach(card => {
             $(`.five-day-cards`).append(card)
         });
-      }
+    }
 
-      const converDate = (date)=>{
+    const converDate = (date) => {
         return moment(date).format("Do-MMM")
-      }
-      
-      const uppercaseFirst = (string) =>{
+    }
+
+    const uppercaseFirst = (string) => {
         return string.charAt(0).toUpperCase() + string.slice(1);
-      }
-      
+    }
 
 
-  
+
+
 
     currentweather();
 
