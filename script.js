@@ -202,9 +202,11 @@ $(document).ready(function () {
         if(val === `Welcome to Weather Dashboard! Enter a city name in the search box.`){
             $(`aside`).addClass(`span-2-col`);
             $(`.container-main`).addClass(`span-no-data`);
+            $(`.search-box`).addClass(`initial-search-box`);
         }else{
             $(`aside`).removeClass(`span-2-col`);
             $(`.container-main`).removeClass(`span-no-data`);
+            $(`.search-box`).removeClass(`initial-search-box`);
         
         }
     }

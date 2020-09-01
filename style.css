@@ -210,7 +210,7 @@ div.five-day-cards>div:last-child>.card-body {
   display: flex;
   width: 100%;
   margin: 0 !important;
-  padding: 1rem 9%;
+  padding: 1rem;
 }
 
 .search-btn {
@@ -242,6 +242,10 @@ div.five-day-cards>div:last-child>.card-body {
   grid-column-start: 2;
   grid-column-end: 4;
   font-family: monospace;
+}
+.initial-search-box{
+  width: 334px;
+  margin: auto !important;
 }
 
 /* tablets */
