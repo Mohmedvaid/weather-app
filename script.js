@@ -199,7 +199,7 @@ $(document).ready(function () {
     const initialPage = () => {
         let val = $(`p#city-name`).text()
         console.log(val)
-        if(val === `Enter a city name!`){
+        if(val === `Welcome to Weather Dashboard! Enter a city name in the search box.`){
             $(`aside`).addClass(`span-2-col`);
             $(`.container-main`).addClass(`span-no-data`);
         }else{

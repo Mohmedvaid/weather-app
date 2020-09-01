@@ -185,13 +185,6 @@ div.five-day-cards>div:last-child>.card-body {
   justify-self: start;
 }
 
-.span-no-data {
-  grid-row-start: 2;
-  grid-column-start: 2;
-  grid-column-end: 4;
-  /* width: 100%; */
-}
-
 
 /* loader styles */
 #loading {
@@ -242,6 +235,13 @@ div.five-day-cards>div:last-child>.card-body {
 .span-2-col {
   grid-column-start: 2;
   grid-column-end: 4;
+}
+
+.span-no-data {
+  grid-row-start: 2;
+  grid-column-start: 2;
+  grid-column-end: 4;
+  font-family: monospace;
 }
 
 /* tablets */
