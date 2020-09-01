@@ -204,6 +204,7 @@ $(document).ready(function () {
             $(`.container-main`).addClass(`span-no-data`);
         }else{
             $(`aside`).removeClass(`span-2-col`);
+            $(`.container-main`).removeClass(`span-no-data`);
         
         }
     }
