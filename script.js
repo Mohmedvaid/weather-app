@@ -33,7 +33,7 @@ $(document).ready(function () {
             $(`#cities`).remove();
             renderCities(cityArray);
             removeLoader();
-            // initialPage();
+            initialPage();
         })
     }
 
