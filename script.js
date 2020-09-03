@@ -47,7 +47,7 @@ $(document).ready(function () {
 
 
     const getAndRenderWeather = async (city) => {
-        let queryURL = `http://api.openweathermap.org/data/2.5/forecast?appid=7ac3b8ae4166269284ad86c8653c1b57&units=imperial&q=${city}`
+        let queryURL = `https://api.openweathermap.org/data/2.5/forecast?appid=7ac3b8ae4166269284ad86c8653c1b57&units=imperial&q=${city}`
         let response = await getWeatherData(queryURL);
         let todaysWeather = createWeatherObj(response);
 
@@ -100,7 +100,7 @@ $(document).ready(function () {
 
     const renderTodaysWeather = (data) => {
         $(`#city-name`).text(`${Math.floor(data.temp)}${String.fromCharCode(8457)} - ${data.city}`);
-        $(`.todays-weather`).after(`<div class="todays-img"><img src="http://openweathermap.org/img/wn/${data.icon}@2x.png"/></div>`)
+        $(`.todays-weather`).after(`<div class="todays-img"><img src="https://openweathermap.org/img/wn/${data.icon}@2x.png"/></div>`)
         $(`#todays-temp`).text(`Humidity: ${data.humidity}`);
         $(`#wind`).text(`Wind: ${data.wind} MPH`)
 
@@ -174,7 +174,7 @@ $(document).ready(function () {
               <div class="date">${newDate[0]} ${newDate[1]}</div>
                 <h5 class="card-title">${newTemp} ${String.fromCharCode(8457)}</h5>
                 <p class="short-info">${newDescription}</p>
-                <img class="five-day-img" src="http://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png"/>
+                <img class="five-day-img" src="https://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png"/>
                 
               </div>
             </div>`
