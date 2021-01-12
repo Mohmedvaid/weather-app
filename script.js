@@ -43,6 +43,7 @@ $(document).ready(function () {
         clearOldData();
         await getAndRenderWeather(city);
         removeLoader();
+        initialPage();
     })
 
 
