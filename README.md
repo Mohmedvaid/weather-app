@@ -7,7 +7,7 @@
 The Weather App shows basic weather data such as a 5-day forecast for a city based on user search. 
 
 ## Usage
-mohmedvaid.github.io/theshoppies/
+https://mohmedvaid.github.io/weather-app/
 
 
 ## Credits
